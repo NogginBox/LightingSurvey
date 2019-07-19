@@ -1,0 +1,14 @@
+{
+  "version": "1.0",
+  "defaultProvider": "filesystem",
+  "libraries": [
+    {
+      "library": "node_modules/govuk-frontend/assets/images",
+      "destination": "wwwroot/assets/images/"
+    },
+    {
+      "library": "node_modules/govuk-frontend/assets/fonts/",
+      "destination": "wwwroot/assets/fonts/"
+    }
+  ]
+}
