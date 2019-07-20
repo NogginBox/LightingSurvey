@@ -40,6 +40,16 @@ namespace CqsLighting.MvcSite.Controllers
             return View();
         }
 
+        public IActionResult Summary()
+        {
+            return View();
+        }
+
+        public IActionResult Done()
+        {
+            return View();
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
