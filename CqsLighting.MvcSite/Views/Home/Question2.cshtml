@@ -1,0 +1,31 @@
+﻿@{
+    ViewData["Title"] = "Question 1";
+}
+
+<a href="#" class="govuk-back-link">Back</a>
+
+<main class="govuk-main-wrapper" id="main-content" role="main">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <form asp-action="Question3" method="post" novalidate>
+
+                <div class="govuk-form-group">
+                    <h1 class="govuk-label-wrapper">
+                        <label class="govuk-label govuk-label--xl" for="email">
+                            Email address
+                        </label>
+                    </h1>
+                    <span id="email-hint" class="govuk-hint">
+                        We’ll use this to send you our findings after the survey has closed
+                    </span>
+                    <input class="govuk-input" id="email" name="email" type="email" aria-describedby="email-hint" autocomplete="email" spellcheck="false">
+                </div>
+
+
+                <button type="submit" class="govuk-button">
+                    Continue
+                </button>
+            </form>
+        </div>
+    </div>
+</main>
