@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using LightingSurvey.MvcSite.Models;
 using Microsoft.AspNetCore.Mvc;
-using CqsLighting.MvcSite.Models;
+using System.Diagnostics;
 
-namespace CqsLighting.MvcSite.Controllers
+namespace LightingSurvey.MvcSite.Controllers
 {
     public class HomeController : Controller
     {

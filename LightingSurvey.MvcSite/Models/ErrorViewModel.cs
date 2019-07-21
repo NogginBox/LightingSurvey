@@ -1,6 +1,4 @@
-using System;
-
-namespace CqsLighting.MvcSite.Models
+namespace LightingSurvey.MvcSite.Models
 {
     public class ErrorViewModel
     {
