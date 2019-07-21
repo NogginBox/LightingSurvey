@@ -1,4 +1,6 @@
-﻿@{
+﻿@using LightingSurvey.MvcSite.ViewModels.Survey
+@model QuestionPageViewModel<EmailQuestionViewModel>
+@{
     ViewData["Title"] = "Question 2";
 }
 
@@ -7,18 +9,18 @@
 <main class="govuk-main-wrapper" id="main-content" role="main">
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-            <form asp-action="Question3" method="post" novalidate>
+            <form method="post" novalidate>
 
                 <div class="govuk-form-group">
                     <h1 class="govuk-label-wrapper">
-                        <label class="govuk-label govuk-label--xl" for="email">
+                        <label class="govuk-label govuk-label--xl" asp-for="Question.Answer">
                             Email address
                         </label>
                     </h1>
                     <span id="email-hint" class="govuk-hint">
                         We’ll use this to send you our findings after the survey has closed
                     </span>
-                    <input class="govuk-input" id="email" name="email" type="email" aria-describedby="email-hint" autocomplete="email" spellcheck="false">
+                    <input class="govuk-input" asp-for="Question.Answer" aria-describedby="email-hint" autocomplete="email" spellcheck="false">
                 </div>
 
 
