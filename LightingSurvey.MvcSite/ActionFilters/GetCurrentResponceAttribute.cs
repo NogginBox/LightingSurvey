@@ -10,14 +10,15 @@ namespace LightingSurvey.MvcSite.ActionFilters
     /// <summary>
     /// Makes sure there is a currently active survey response, or redirects to start of survey
     /// </summary>
-    public class GetSurveyResponceAttribute : ActionFilterAttribute
+    public class GetCurrentResponceAttribute : ActionFilterAttribute
     {
         private readonly ISurveyResponseRepository _surveyResponseRepository;
         private const string tempResponseId = "temp-id";
 
-        public GetSurveyResponceAttribute(ISurveyResponseRepository surveyResponseRepository)
+        public GetCurrentResponceAttribute(ISurveyResponseRepository surveyResponseRepository)
         {
             _surveyResponseRepository = surveyResponseRepository;
+            Order = 1;
         }
 
         public override async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)

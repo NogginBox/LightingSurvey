@@ -37,7 +37,7 @@ namespace LightingSurvey.MvcSite.Controllers
             return RedirectToAction("Question1");
         }
 
-        [ServiceFilter(typeof(GetSurveyResponceAttribute))]
+        [ServiceFilter(typeof(GetCurrentResponceAttribute))]
         public IActionResult Question1()
         {
             return QuestionView<NameQuestionViewModel>(() =>
@@ -46,18 +46,10 @@ namespace LightingSurvey.MvcSite.Controllers
         }
 
         [HttpPost]
-        [ServiceFilter(typeof(GetSurveyResponceAttribute))]
+        [CheckValidAnswer]
+        [ServiceFilter(typeof(GetCurrentResponceAttribute))]
         public async Task<IActionResult> Question1(NameQuestionViewModel question)
         {
-            if(!ModelState.IsValid)
-            {
-                var model = new QuestionPageViewModel<NameQuestionViewModel>
-                {
-                    Question = question
-                };
-                return View(model);
-            }
-
             CurrentResponse.Respondent.Name = question.Answer;
             await _surveyResponseRepository.SaveChanges();
 
@@ -65,7 +57,7 @@ namespace LightingSurvey.MvcSite.Controllers
         }
 
 
-        [ServiceFilter(typeof(GetSurveyResponceAttribute))]
+        [ServiceFilter(typeof(GetCurrentResponceAttribute))]
         public IActionResult Question2()
         {
             return QuestionView<EmailQuestionViewModel>(() => 
@@ -74,18 +66,10 @@ namespace LightingSurvey.MvcSite.Controllers
         }
 
         [HttpPost]
-        [ServiceFilter(typeof(GetSurveyResponceAttribute))]
+        [CheckValidAnswer]
+        [ServiceFilter(typeof(GetCurrentResponceAttribute))]
         public async Task<IActionResult> Question2(EmailQuestionViewModel question)
         {
-            if (!ModelState.IsValid)
-            {
-                var model = new QuestionPageViewModel<EmailQuestionViewModel>
-                {
-                    Question = question
-                };
-                return View(model);
-            }
-
             CurrentResponse.Respondent.EmailAddress = question.Answer;
             await _surveyResponseRepository.SaveChanges();
 
@@ -114,7 +98,7 @@ namespace LightingSurvey.MvcSite.Controllers
 
         private IActionResult QuestionView<T>(Func<string> getValue) where T : IQuestionViewModel, new()
         {
-            var model = new QuestionPageViewModel<T>
+            var model = new QuestionPageViewModel
             {
                 Question = new T { Answer = getValue() }
             };
