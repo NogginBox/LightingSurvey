@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using LightingSurvey.Data;
 using LightingSurvey.Data.Repositories;
+using LightingSurvey.MvcSite.ActionFilters;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -29,6 +30,7 @@ namespace LightingSurvey.MvcSite
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddDbContext<IDataContext, DataContext>();
             services.AddScoped<ISurveyResponseRepository, SurveyResponseRepository>();
+            services.AddScoped<GetSurveyResponceAttribute>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

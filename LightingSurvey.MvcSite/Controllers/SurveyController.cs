@@ -1,4 +1,6 @@
-﻿using LightingSurvey.Data.Repositories;
+﻿using LightingSurvey.Data.Models;
+using LightingSurvey.Data.Repositories;
+using LightingSurvey.MvcSite.ActionFilters;
 using LightingSurvey.MvcSite.ViewModels.Survey;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -7,8 +9,12 @@ namespace LightingSurvey.MvcSite.Controllers
 {
     public class SurveyController : Controller
     {
-        private readonly ISurveyResponseRepository _surveyResponseRepository;
+        /// <summary>
+        /// Available to all actions and retrieved using GetSurveyResponceAttribute
+        /// </summary>
+        public SurveyResponse CurrentResponse { get; set; }
 
+        private readonly ISurveyResponseRepository _surveyResponseRepository;
         private const string tempResponseId = "temp-id";
 
         public SurveyController(ISurveyResponseRepository surveyResponseRepository)
@@ -19,10 +25,10 @@ namespace LightingSurvey.MvcSite.Controllers
         [HttpPost]
         public async Task<IActionResult> Start()
         {
-            var response = await _surveyResponseRepository.Find(tempResponseId);
-            if(response == null)
+            CurrentResponse = await _surveyResponseRepository.Find(tempResponseId);
+            if(CurrentResponse == null)
             {
-                response = await _surveyResponseRepository.Create();
+                CurrentResponse = await _surveyResponseRepository.Create();
                 // todo: save external ID in cookie
                 await _surveyResponseRepository.SaveChanges();
             }
@@ -30,43 +36,31 @@ namespace LightingSurvey.MvcSite.Controllers
             return RedirectToAction("Question1");
         }
 
-        public async Task<IActionResult> Question1()
+        [ServiceFilter(typeof(GetSurveyResponceAttribute))]
+        public IActionResult Question1()
         {
-            // todo: extract this into attribute
-            var response = await _surveyResponseRepository.Find(tempResponseId);
-            if(response == null)
+            var model = new QuestionPageViewModel<NameQuestionViewModel>
             {
-                return RedirectToAction("Index", "Home");
-            }
-
-            var model = new QuestionPageViewModel<NameFormViewModel>
-            {
-                Question = new NameFormViewModel { Name = response.Respondent.Name }
+                Question = new NameQuestionViewModel { Name = CurrentResponse.Respondent.Name }
             };
 
             return View(model);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Question1(NameFormViewModel question)
+        [ServiceFilter(typeof(GetSurveyResponceAttribute))]
+        public async Task<IActionResult> Question1(NameQuestionViewModel question)
         {
             if(!ModelState.IsValid)
             {
-                var model = new QuestionPageViewModel<NameFormViewModel>
+                var model = new QuestionPageViewModel<NameQuestionViewModel>
                 {
                     Question = question
                 };
                 return View(model);
             }
 
-            // todo: extract this into attribute
-            var response = await _surveyResponseRepository.Find(tempResponseId);
-            if (response == null)
-            {
-                return RedirectToAction("Index", "Home");
-            }
-
-            response.Respondent.Name = question.Name;
+            CurrentResponse.Respondent.Name = question.Name;
             await _surveyResponseRepository.SaveChanges();
 
             return RedirectToAction("Question2");

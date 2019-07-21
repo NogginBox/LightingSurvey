@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace LightingSurvey.MvcSite.ViewModels.Survey
 {
-    public class NameFormViewModel
+    public class NameQuestionViewModel
     {
         [Required]
         [StringLength(50)]
