@@ -15,7 +15,37 @@ namespace CqsLighting.MvcSite.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
+        public IActionResult Question1()
+        {
+            return View();
+        }
+
+        public IActionResult Question2()
+        {
+            return View();
+        }
+
+        public IActionResult Question3()
+        {
+            return View();
+        }
+
+        public IActionResult Question4()
+        {
+            return View();
+        }
+
+        public IActionResult Question5()
+        {
+            return View();
+        }
+
+        public IActionResult Summary()
+        {
+            return View();
+        }
+
+        public IActionResult Done()
         {
             return View();
         }
