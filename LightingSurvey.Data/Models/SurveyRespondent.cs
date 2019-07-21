@@ -4,6 +4,11 @@ namespace LightingSurvey.Data.Models
 {
     public class SurveyRespondent
     {
+        public SurveyRespondent()
+        {
+            Address = new Address();
+        }
+
         [StringLength(50)]
         public string Name { get; set; }
 

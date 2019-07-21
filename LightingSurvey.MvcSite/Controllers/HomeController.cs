@@ -1,42 +1,13 @@
-﻿using LightingSurvey.MvcSite.Models;
+﻿using LightingSurvey.MvcSite.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
 namespace LightingSurvey.MvcSite.Controllers
 {
+
     public class HomeController : Controller
     {
         public IActionResult Index()
-        {
-            return View();
-        }
-
-        public IActionResult Question1()
-        {
-            return View();
-        }
-
-        public IActionResult Question2()
-        {
-            return View();
-        }
-
-        public IActionResult Question3()
-        {
-            return View();
-        }
-
-        public IActionResult Question4()
-        {
-            return View();
-        }
-
-        public IActionResult Question5()
-        {
-            return View();
-        }
-
-        public IActionResult Summary()
         {
             return View();
         }

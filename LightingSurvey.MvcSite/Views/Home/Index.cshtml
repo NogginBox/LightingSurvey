@@ -18,9 +18,11 @@
 
             <p class="govuk-body">Filling out this survey takes around 5 minutes.</p>
 
-            <a asp-action="question1" role="button" draggable="false" class="govuk-button govuk-button--start govuk-!-margin-top-2 govuk-!-margin-bottom-8">
-                Start now
-            </a>
+            <form asp-controller="Survey" asp-action="Start" method="post">
+                <button type="submit" class="govuk-button govuk-button--start govuk-!-margin-top-2 govuk-!-margin-bottom-8">
+                    Start now
+                </button>
+            </form>
         </div>
     </div>
 </main>

@@ -2,6 +2,11 @@
 {
     public class SurveyResponse
     {
+        public SurveyResponse()
+        {
+            Respondent = new SurveyRespondent();
+        }
+
         public int Id { get; set; }
 
         /// <summary>

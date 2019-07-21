@@ -1,21 +1,23 @@
-﻿@{
+﻿@using LightingSurvey.MvcSite.ViewModels.Survey
+@model QuestionPageViewModel<NameFormViewModel>
+@{
     ViewData["Title"] = "Question 1";
 }
 
-<a asp-action="Index" class="govuk-back-link">Back</a>
+<a asp-controller="Home" asp-action="Index" class="govuk-back-link">Back</a>
 
 <main class="govuk-main-wrapper " id="main-content" role="main">
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-            <form asp-action="Question2" method="post" novalidate>
+            <form method="post" novalidate>
                 <div class="govuk-form-group">
                     <h1 class="govuk-label-wrapper">
-                        <label class="govuk-label govuk-label--xl" for="full-name">
+                        <label class="govuk-label govuk-label--xl" asp-for="Question.Name">
                             What is your full name?
                         </label>
 
                     </h1>
-                    <input class="govuk-input" id="full-name" name="full-name" type="text" autocomplete="name" spellcheck="false">
+                    <input class="govuk-input" asp-for="Question.Name" type="text" autocomplete="name" spellcheck="false">
                 </div>
 
                 <button type="submit" class="govuk-button">
