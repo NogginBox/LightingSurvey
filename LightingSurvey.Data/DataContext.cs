@@ -29,6 +29,11 @@ namespace LightingSurvey.Data
         {
             modelBuilder.Entity<SurveyResponse>(entity =>
             {
+                entity.OwnsOne(response => response.Dates);
+            });
+
+            modelBuilder.Entity<SurveyResponse>(entity =>
+            {
                 entity.OwnsOne(response => response.Respondent);
             });
 

@@ -1,9 +1,9 @@
-﻿using LightingSurvey.Data.Models;
+﻿using LightingSurvey.Common.Services;
+using LightingSurvey.Data.Models;
 using LightingSurvey.Data.Repositories;
 using LightingSurvey.MvcSite.ActionFilters;
 using LightingSurvey.MvcSite.ViewModels.Survey;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Threading.Tasks;
 
 namespace LightingSurvey.MvcSite.Controllers
@@ -15,11 +15,13 @@ namespace LightingSurvey.MvcSite.Controllers
         /// </summary>
         public SurveyResponse CurrentResponse { get; set; }
 
+        private readonly IDateTimeService _dateTime;
         private readonly ISurveyResponseRepository _surveyResponseRepository;
         private const string tempResponseId = "temp-id";
 
-        public SurveyController(ISurveyResponseRepository surveyResponseRepository)
+        public SurveyController(IDateTimeService dateTime, ISurveyResponseRepository surveyResponseRepository)
         {
+            _dateTime = dateTime;
             _surveyResponseRepository = surveyResponseRepository;
         }
 
@@ -49,6 +51,7 @@ namespace LightingSurvey.MvcSite.Controllers
         public async Task<IActionResult> Question1(NameQuestionViewModel question)
         {
             CurrentResponse.Respondent.Name = question.Answer;
+            CurrentResponse.Modified(_dateTime.Now);
             await _surveyResponseRepository.SaveChanges();
 
             return RedirectToAction("Question2");
@@ -67,6 +70,7 @@ namespace LightingSurvey.MvcSite.Controllers
         public async Task<IActionResult> Question2(EmailQuestionViewModel question)
         {
             CurrentResponse.Respondent.EmailAddress = question.Answer;
+            CurrentResponse.Modified(_dateTime.Now);
             await _surveyResponseRepository.SaveChanges();
 
             return RedirectToAction("Question3");
@@ -84,6 +88,7 @@ namespace LightingSurvey.MvcSite.Controllers
         public async Task<IActionResult> Question3(NameQuestionViewModel question)
         {
             CurrentResponse.Respondent.Address.PostCode = question.Answer;
+            CurrentResponse.Modified(_dateTime.Now);
             await _surveyResponseRepository.SaveChanges();
 
             return RedirectToAction("Question4");
@@ -101,6 +106,7 @@ namespace LightingSurvey.MvcSite.Controllers
         public async Task<IActionResult> Question4(BooleanQuestionViewModel question)
         {
             CurrentResponse.HappyWithLighting = question.Answer;
+            CurrentResponse.Modified(_dateTime.Now);
             await _surveyResponseRepository.SaveChanges();
 
             return RedirectToAction("Question5");
@@ -118,6 +124,7 @@ namespace LightingSurvey.MvcSite.Controllers
         public async Task<IActionResult> Question5(NumberQuestionViewModel question)
         {
             CurrentResponse.PerceivedBrightnessLevel = (ushort?)question.Answer;
+            CurrentResponse.Modified(_dateTime.Now);
             await _surveyResponseRepository.SaveChanges();
 
             return RedirectToAction("Summary");
@@ -134,9 +141,9 @@ namespace LightingSurvey.MvcSite.Controllers
         [ServiceFilter(typeof(GetCurrentResponceAttribute))]
         public IActionResult Confirm()
         {
-            //CurrentResponse.Completed = DateTime.Now;
-            //_surveyResponseRepository.SaveChanges();
-            // remove current survey cookie
+            CurrentResponse.Complete(_dateTime.Now);
+            _surveyResponseRepository.SaveChanges();
+            // todo: remove current survey cookie
             return RedirectToAction("Done", "Home");
         }
 

@@ -1,7 +1,10 @@
+using LightingSurvey.Common.Services;
 using LightingSurvey.Data;
 using LightingSurvey.Data.Models;
 using LightingSurvey.Data.Repositories;
 using Microsoft.EntityFrameworkCore;
+using NSubstitute;
+using System;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -13,7 +16,10 @@ namespace LightingSurvey.Tests.Data.Repositories
         public async Task CreateSetsIdExternalAndAddsToContext()
         {
             // Arrange
+            var testCreateDate = new DateTime(2019, 08, 11);
             var options = CreateInMemoryDbContextOptions("CreateSetsIdExternalAndAddsToContext");
+            var datetimeService = Substitute.For<IDateTimeService>();
+            datetimeService.Now.Returns(testCreateDate);
 
             // Insert seed data into the database using one instance of the context
             using (var context = new DataContext(options))
@@ -26,7 +32,7 @@ namespace LightingSurvey.Tests.Data.Repositories
             using (var context = new DataContext(options))
             {
                 // Arrange repository
-                var repository = new SurveyResponseRepository(context);
+                var repository = new SurveyResponseRepository(context, datetimeService);
 
                 // Act
                 var newSurveyResponse = await repository.Create();
@@ -35,6 +41,7 @@ namespace LightingSurvey.Tests.Data.Repositories
                 // Assert
                 Assert.Equal(2, await context.Responces.CountAsync());
                 Assert.NotNull(newSurveyResponse.IdExternal);
+                Assert.Equal(testCreateDate, newSurveyResponse.Dates.Created);
             }
         }
 
@@ -56,7 +63,7 @@ namespace LightingSurvey.Tests.Data.Repositories
             using (var context = new DataContext(options))
             {
                 // Arrange repository
-                var repository = new SurveyResponseRepository(context);
+                var repository = new SurveyResponseRepository(context, null);
 
                 // Act
                 var surveyResponse = await repository.Find("id2");

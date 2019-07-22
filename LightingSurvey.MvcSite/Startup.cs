@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using LightingSurvey.Common.Services;
 using LightingSurvey.Data;
 using LightingSurvey.Data.Repositories;
 using LightingSurvey.MvcSite.ActionFilters;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -31,6 +26,7 @@ namespace LightingSurvey.MvcSite
             services.AddDbContext<IDataContext, DataContext>();
             services.AddScoped<ISurveyResponseRepository, SurveyResponseRepository>();
             services.AddScoped<GetCurrentResponceAttribute>();
+            services.AddSingleton<IDateTimeService, DateTimeService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
