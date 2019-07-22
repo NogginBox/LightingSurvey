@@ -1,4 +1,6 @@
-﻿@{
+﻿@using LightingSurvey.MvcSite.ViewModels.Survey
+@model QuestionPageViewModel<bool?>
+@{
     ViewData["Title"] = "Question 4";
 }
 
@@ -7,7 +9,7 @@
 <main class="govuk-main-wrapper " id="main-content" role="main">
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-            <form asp-action="Question5" method="post" novalidate>
+            <form method="post" novalidate>
 
                 <div class="govuk-form-group">
                     <fieldset class="govuk-fieldset">
@@ -18,14 +20,14 @@
                         </legend>
                         <div class="govuk-radios govuk-radios--inline">
                             <div class="govuk-radios__item">
-                                <input class="govuk-radios__input" id="changed-name-1" name="changed-name" type="radio" value="yes">
-                                <label class="govuk-label govuk-radios__label" for="changed-name-1">
+                                <input asp-for="Question.Answer" class="govuk-radios__input" type="radio" value="true" id="answerY">
+                                <label class="govuk-label govuk-radios__label" for="answerY">
                                     Yes
                                 </label>
                             </div>
                             <div class="govuk-radios__item">
-                                <input class="govuk-radios__input" id="changed-name-2" name="changed-name" type="radio" value="no">
-                                <label class="govuk-label govuk-radios__label" for="changed-name-2">
+                                <input asp-for="Question.Answer" class="govuk-radios__input" type="radio" value="false" id="answerN">
+                                <label class="govuk-label govuk-radios__label" for="answerN">
                                     No
                                 </label>
                             </div>

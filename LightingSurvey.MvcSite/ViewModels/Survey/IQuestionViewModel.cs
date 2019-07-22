@@ -1,7 +1,7 @@
 ﻿namespace LightingSurvey.MvcSite.ViewModels.Survey
 {
-    public interface IQuestionViewModel
+    public interface IQuestionViewModel<T>
     {
-        string Answer { get; set; }
+        T Answer { get; set; }
     }
 }

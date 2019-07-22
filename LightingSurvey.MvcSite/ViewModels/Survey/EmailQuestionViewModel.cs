@@ -2,7 +2,7 @@
 
 namespace LightingSurvey.MvcSite.ViewModels.Survey
 {
-    public class EmailQuestionViewModel : IQuestionViewModel
+    public class EmailQuestionViewModel : IQuestionViewModel<string>
     {
         [Required]
         [EmailAddress]

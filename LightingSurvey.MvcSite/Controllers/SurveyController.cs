@@ -40,13 +40,11 @@ namespace LightingSurvey.MvcSite.Controllers
         [ServiceFilter(typeof(GetCurrentResponceAttribute))]
         public IActionResult Question1()
         {
-            return QuestionView<NameQuestionViewModel>(() =>
-                 CurrentResponse.Respondent.Name
-            );
+            return QuestionView<NameQuestionViewModel, string>(CurrentResponse.Respondent.Name);
         }
 
         [HttpPost]
-        [CheckValidAnswer]
+        [CheckValidAnswer(typeof(string))]
         [ServiceFilter(typeof(GetCurrentResponceAttribute))]
         public async Task<IActionResult> Question1(NameQuestionViewModel question)
         {
@@ -60,13 +58,11 @@ namespace LightingSurvey.MvcSite.Controllers
         [ServiceFilter(typeof(GetCurrentResponceAttribute))]
         public IActionResult Question2()
         {
-            return QuestionView<EmailQuestionViewModel>(() => 
-                 CurrentResponse.Respondent.EmailAddress
-            );
+            return QuestionView<EmailQuestionViewModel, string>(CurrentResponse.Respondent.EmailAddress);
         }
 
         [HttpPost]
-        [CheckValidAnswer]
+        [CheckValidAnswer(typeof(string))]
         [ServiceFilter(typeof(GetCurrentResponceAttribute))]
         public async Task<IActionResult> Question2(EmailQuestionViewModel question)
         {
@@ -76,31 +72,57 @@ namespace LightingSurvey.MvcSite.Controllers
             return RedirectToAction("Question3");
         }
 
+        [ServiceFilter(typeof(GetCurrentResponceAttribute))]
         public IActionResult Question3()
         {
-            return View();
+            return QuestionView<NameQuestionViewModel, string>(CurrentResponse.Respondent.Address.PostCode);
         }
 
+        [HttpPost]
+        [CheckValidAnswer(typeof(string))]
+        [ServiceFilter(typeof(GetCurrentResponceAttribute))]
+        public async Task<IActionResult> Question3(NameQuestionViewModel question)
+        {
+            CurrentResponse.Respondent.Address.PostCode = question.Answer;
+            await _surveyResponseRepository.SaveChanges();
+
+            return RedirectToAction("Question4");
+        }
+
+        [ServiceFilter(typeof(GetCurrentResponceAttribute))]
         public IActionResult Question4()
         {
-            return View();
+            return QuestionView<BooleanQuestionViewModel, bool?>(CurrentResponse.HappyWithLighting);
         }
 
+        [HttpPost]
+        [CheckValidAnswer(typeof(bool))]
+        [ServiceFilter(typeof(GetCurrentResponceAttribute))]
+        public async Task<IActionResult> Question4(BooleanQuestionViewModel question)
+        {
+            CurrentResponse.HappyWithLighting = question.Answer;
+            await _surveyResponseRepository.SaveChanges();
+
+            return RedirectToAction("Question5");
+        }
+
+        [ServiceFilter(typeof(GetCurrentResponceAttribute))]
         public IActionResult Question5()
         {
             return View();
         }
 
+        [ServiceFilter(typeof(GetCurrentResponceAttribute))]
         public IActionResult Summary()
         {
             return View();
         }
 
-        private IActionResult QuestionView<T>(Func<string> getValue) where T : IQuestionViewModel, new()
+        private IActionResult QuestionView<TQuestion, TAnswer>(TAnswer answer) where TQuestion : IQuestionViewModel<TAnswer>, new()
         {
-            var model = new QuestionPageViewModel
+            var model = new QuestionPageViewModel<TAnswer>
             {
-                Question = new T { Answer = getValue() }
+                Question = new TQuestion { Answer = answer }
             };
 
             return View(model);

@@ -1,4 +1,5 @@
-﻿using LightingSurvey.MvcSite.ViewModels.Survey;
+﻿using LightingSurvey.MvcSite.Extensions;
+using LightingSurvey.MvcSite.ViewModels.Survey;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System;
@@ -10,29 +11,34 @@ namespace LightingSurvey.MvcSite.ActionFilters
     /// </summary>
     public class CheckValidAnswerAttribute : ActionFilterAttribute
     {
-        public CheckValidAnswerAttribute()
+        private readonly Type _typeOf;
+
+        public CheckValidAnswerAttribute(Type answerType)
         {
             Order = 2;
+            _typeOf = answerType;
         }
 
         public override void OnActionExecuting(ActionExecutingContext context)
         {
             if (!context.ModelState.IsValid)
             {
-                if (!(context.ActionArguments["Question"] is IQuestionViewModel question))
-                {
-                    throw new Exception("This action was not passed a valid IQuestion");
-                }
-
                 if (!(context.Controller is Controller controller))
                 {
                     throw new Exception("Attribute not on controller class");
                 }
 
-                var model = new QuestionPageViewModel
+                var model = typeof(QuestionPageViewModel<>).CreateGenricInstance(_typeOf) as dynamic;
+                try
                 {
-                    Question = question
-                };
+                    dynamic question = context.ActionArguments["Question"];
+                    model.Question = question;
+                }
+                catch(Exception ex)
+                {
+                    throw new Exception("This action was not passed a valid IQuestion", ex);
+                }
+
                 context.Result = controller.View(model);
             }
 
