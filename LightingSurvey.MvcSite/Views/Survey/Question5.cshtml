@@ -1,0 +1,44 @@
+﻿@using LightingSurvey.MvcSite.ViewModels.Survey
+@model QuestionPageViewModel<int?>
+@{
+    ViewData["Title"] = "Question 5";
+}
+
+<a asp-action="Question4" class="govuk-back-link">Back</a>
+
+<main class="govuk-main-wrapper " id="main-content" role="main">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <form method="post" novalidate>
+
+                <div class="govuk-form-group">
+                    <fieldset class="govuk-fieldset">
+                        <legend class="govuk-fieldset__legend govuk-fieldset__legend--xl">
+                            <h1 class="govuk-fieldset__heading">
+                                How would you describe the level of brightness?
+                            </h1>
+                        </legend>
+                        <span id="changed-name-hint" class="govuk-hint">
+                            1 being very dark, 10 being very bright.
+                        </span>
+                        <div class="govuk-radios govuk-radios--small">
+                            @for (var i = 1; i <= 10; i++)
+                            {
+                            <div class="govuk-radios__item">
+                                <input class="govuk-radios__input" id="brightness-@i" asp-for="Question.Answer" type="radio" value="@i">
+                                <label class="govuk-label govuk-radios__label" for="brightness-@i">
+                                    @i
+                                </label>
+                            </div>
+                            }
+                        </div>
+                    </fieldset>
+                </div>
+
+                <button type="submit" class="govuk-button">
+                    Continue
+                </button>
+            </form>
+        </div>
+    </div>
+</main>

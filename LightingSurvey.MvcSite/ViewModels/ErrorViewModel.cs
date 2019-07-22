@@ -1,4 +1,4 @@
-namespace LightingSurvey.MvcSite.Models
+namespace LightingSurvey.MvcSite.ViewModels
 {
     public class ErrorViewModel
     {

@@ -1,4 +1,6 @@
-﻿@{
+﻿@using LightingSurvey.MvcSite.ViewModels.Survey
+@model QuestionPageViewModel<string>
+@{
     ViewData["Title"] = "Question 3";
 }
 
@@ -7,15 +9,15 @@
 <main class="govuk-main-wrapper " id="main-content" role="main">
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-            <form asp-action="Question4" method="post" novalidate>
+            <form method="post" novalidate>
                 <h1 class="govuk-heading-xl">What is your home address?</h1>
                 <div class="govuk-form-group">
 
-                    <label class="govuk-label govuk-label--xl" for="postcode">
+                    <label class="govuk-label govuk-label--xl" asp-for="Question.Answer">
                         Postcode
                     </label>
 
-                    <input class="govuk-input govuk-input--width-10" id="postcode" name="postcode" type="text">
+                    <input class="govuk-input govuk-input--width-10" asp-for="Question.Answer" type="text">
                 </div>
 
                 <button type="submit" class="govuk-button">
