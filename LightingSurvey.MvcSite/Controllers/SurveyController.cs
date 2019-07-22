@@ -1,6 +1,8 @@
-﻿using LightingSurvey.Data.Models;
+﻿using LightingSurvey.Common.Services;
+using LightingSurvey.Data.Models;
 using LightingSurvey.Data.Repositories;
 using LightingSurvey.MvcSite.ActionFilters;
+using LightingSurvey.MvcSite.Services;
 using LightingSurvey.MvcSite.ViewModels.Survey;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -15,22 +17,26 @@ namespace LightingSurvey.MvcSite.Controllers
         /// </summary>
         public SurveyResponse CurrentResponse { get; set; }
 
+        private readonly IClientSideStorageService _clientStorage;
+        private readonly IDateTimeService _dateTime;
         private readonly ISurveyResponseRepository _surveyResponseRepository;
-        private const string tempResponseId = "temp-id";
 
-        public SurveyController(ISurveyResponseRepository surveyResponseRepository)
+        public SurveyController(IClientSideStorageService clientStorage, IDateTimeService dateTime, ISurveyResponseRepository surveyResponseRepository)
         {
+            _clientStorage = clientStorage;
+            _dateTime = dateTime;
             _surveyResponseRepository = surveyResponseRepository;
         }
 
         [HttpPost]
         public async Task<IActionResult> Start()
         {
-            CurrentResponse = await _surveyResponseRepository.Find(tempResponseId);
+            var responseId = _clientStorage.Read(SurveyResponse.StorageKey);
+            CurrentResponse = await _surveyResponseRepository.Find(responseId);
             if(CurrentResponse == null)
             {
                 CurrentResponse = await _surveyResponseRepository.Create();
-                // todo: save external ID in cookie
+                _clientStorage.Write(SurveyResponse.StorageKey, CurrentResponse.IdExternal, TimeSpan.FromDays(7));
                 await _surveyResponseRepository.SaveChanges();
             }
 
@@ -49,6 +55,7 @@ namespace LightingSurvey.MvcSite.Controllers
         public async Task<IActionResult> Question1(NameQuestionViewModel question)
         {
             CurrentResponse.Respondent.Name = question.Answer;
+            CurrentResponse.Modified(_dateTime.Now);
             await _surveyResponseRepository.SaveChanges();
 
             return RedirectToAction("Question2");
@@ -67,6 +74,7 @@ namespace LightingSurvey.MvcSite.Controllers
         public async Task<IActionResult> Question2(EmailQuestionViewModel question)
         {
             CurrentResponse.Respondent.EmailAddress = question.Answer;
+            CurrentResponse.Modified(_dateTime.Now);
             await _surveyResponseRepository.SaveChanges();
 
             return RedirectToAction("Question3");
@@ -84,6 +92,7 @@ namespace LightingSurvey.MvcSite.Controllers
         public async Task<IActionResult> Question3(NameQuestionViewModel question)
         {
             CurrentResponse.Respondent.Address.PostCode = question.Answer;
+            CurrentResponse.Modified(_dateTime.Now);
             await _surveyResponseRepository.SaveChanges();
 
             return RedirectToAction("Question4");
@@ -101,6 +110,7 @@ namespace LightingSurvey.MvcSite.Controllers
         public async Task<IActionResult> Question4(BooleanQuestionViewModel question)
         {
             CurrentResponse.HappyWithLighting = question.Answer;
+            CurrentResponse.Modified(_dateTime.Now);
             await _surveyResponseRepository.SaveChanges();
 
             return RedirectToAction("Question5");
@@ -118,6 +128,7 @@ namespace LightingSurvey.MvcSite.Controllers
         public async Task<IActionResult> Question5(NumberQuestionViewModel question)
         {
             CurrentResponse.PerceivedBrightnessLevel = (ushort?)question.Answer;
+            CurrentResponse.Modified(_dateTime.Now);
             await _surveyResponseRepository.SaveChanges();
 
             return RedirectToAction("Summary");
@@ -132,11 +143,11 @@ namespace LightingSurvey.MvcSite.Controllers
 
         [HttpPost]
         [ServiceFilter(typeof(GetCurrentResponceAttribute))]
-        public IActionResult Confirm()
+        public async Task<IActionResult> Confirm()
         {
-            //CurrentResponse.Completed = DateTime.Now;
-            //_surveyResponseRepository.SaveChanges();
-            // remove current survey cookie
+            CurrentResponse.Complete(_dateTime.Now);
+            await _surveyResponseRepository.SaveChanges();
+            // todo: remove current survey cookie
             return RedirectToAction("Done", "Home");
         }
 

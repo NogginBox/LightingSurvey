@@ -23,6 +23,7 @@
 
 
   <ItemGroup>
+    <ProjectReference Include="..\LightingSurvey.Common\LightingSurvey.Common.csproj" />
     <ProjectReference Include="..\LightingSurvey.Data\LightingSurvey.Data.csproj" />
   </ItemGroup>
 
