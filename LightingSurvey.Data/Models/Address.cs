@@ -6,5 +6,10 @@ namespace LightingSurvey.Data.Models
     {
         [StringLength(9)]
         public string PostCode { get; set; }
+
+        public override string ToString()
+        {
+            return PostCode;
+        }
     }
 }

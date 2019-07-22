@@ -126,7 +126,18 @@ namespace LightingSurvey.MvcSite.Controllers
         [ServiceFilter(typeof(GetCurrentResponceAttribute))]
         public IActionResult Summary()
         {
-            return View();
+            var model = new SummaryPageViewModel(CurrentResponse);
+            return View(model);
+        }
+
+        [HttpPost]
+        [ServiceFilter(typeof(GetCurrentResponceAttribute))]
+        public IActionResult Confirm()
+        {
+            //CurrentResponse.Completed = DateTime.Now;
+            //_surveyResponseRepository.SaveChanges();
+            // remove current survey cookie
+            return RedirectToAction("Done", "Home");
         }
 
         private IActionResult QuestionView<TQuestion, TAnswer>(TAnswer answer) where TQuestion : IQuestionViewModel<TAnswer>, new()

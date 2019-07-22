@@ -1,4 +1,6 @@
-﻿@{
+﻿@using LightingSurvey.MvcSite.ViewModels.Survey
+@model SummaryPageViewModel
+@{
     ViewData["Title"] = "Review your answers";
 }
 
@@ -9,17 +11,17 @@
         <div class="govuk-grid-column-two-thirds govuk-body">
             <h1 class="govuk-heading-xl">Review your answers</h1>
 
-            <form asp-action="Done" method="post">
+            <form asp-action="Confirm" method="post">
                 <dl class="govuk-summary-list">
                     <div class="govuk-summary-list__row">
                         <dt class="govuk-summary-list__key">
                             Name
                         </dt>
                         <dd class="govuk-summary-list__value">
-                            Sarah Philips
+                            @Model.Name
                         </dd>
                         <dd class="govuk-summary-list__actions">
-                            <a class="govuk-link" href="#">
+                            <a class="govuk-link" asp-action="Question1">
                                 Change<span class="govuk-visually-hidden"> name</span>
                             </a>
                         </dd>
@@ -29,10 +31,10 @@
                             Email address
                         </dt>
                         <dd class="govuk-summary-list__value">
-                            lovely@rightnice.com
+                            @Model.Email
                         </dd>
                         <dd class="govuk-summary-list__actions">
-                            <a class="govuk-link" href="#">
+                            <a class="govuk-link" asp-action="Question2">
                                 Change<span class="govuk-visually-hidden"> email address</span>
                             </a>
                         </dd>
@@ -42,10 +44,10 @@
                             Home address
                         </dt>
                         <dd class="govuk-summary-list__value">
-                            72 Guild Street<br>London<br>SE23 6FH
+                            @Model.Address
                         </dd>
                         <dd class="govuk-summary-list__actions">
-                            <a class="govuk-link" href="#">
+                            <a class="govuk-link" asp-action="Question3">
                                 Change<span class="govuk-visually-hidden"> home address</span>
                             </a>
                         </dd>
@@ -55,10 +57,10 @@
                             Happy with lighting
                         </dt>
                         <dd class="govuk-summary-list__value">
-                            Yes
+                            @Model.HappyWithLighting
                         </dd>
                         <dd class="govuk-summary-list__actions">
-                            <a class="govuk-link" href="#">
+                            <a class="govuk-link" asp-action="Question4">
                                 Change<span class="govuk-visually-hidden"> happyness</span>
                             </a>
                         </dd>
@@ -68,16 +70,15 @@
                             Brightness level
                         </dt>
                         <dd class="govuk-summary-list__value">
-                            9
+                            @Model.PercievedBrightness
                         </dd>
                         <dd class="govuk-summary-list__actions">
-                            <a class="govuk-link" href="#">
+                            <a class="govuk-link" asp-action="Question5">
                                 Change<span class="govuk-visually-hidden"> brightness</span>
                             </a>
                         </dd>
                     </div>
                 </dl>
-
 
                 <button type="submit" data-prevent-double-click="true" class="govuk-button">
                     Confirm and send
