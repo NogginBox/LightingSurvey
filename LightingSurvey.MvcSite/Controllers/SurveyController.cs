@@ -96,7 +96,7 @@ namespace LightingSurvey.MvcSite.Controllers
         }
 
         [HttpPost]
-        [CheckValidAnswer(typeof(bool))]
+        [CheckValidAnswer(typeof(bool?))]
         [ServiceFilter(typeof(GetCurrentResponceAttribute))]
         public async Task<IActionResult> Question4(BooleanQuestionViewModel question)
         {
@@ -109,7 +109,18 @@ namespace LightingSurvey.MvcSite.Controllers
         [ServiceFilter(typeof(GetCurrentResponceAttribute))]
         public IActionResult Question5()
         {
-            return View();
+            return QuestionView<NumberQuestionViewModel, int?>(CurrentResponse.PerceivedBrightnessLevel);
+        }
+
+        [HttpPost]
+        [CheckValidAnswer(typeof(int?))]
+        [ServiceFilter(typeof(GetCurrentResponceAttribute))]
+        public async Task<IActionResult> Question5(NumberQuestionViewModel question)
+        {
+            CurrentResponse.PerceivedBrightnessLevel = (ushort?)question.Answer;
+            await _surveyResponseRepository.SaveChanges();
+
+            return RedirectToAction("Summary");
         }
 
         [ServiceFilter(typeof(GetCurrentResponceAttribute))]
