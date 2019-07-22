@@ -4,6 +4,11 @@ namespace LightingSurvey.Data.Models
 {
     public class SurveyResponse
     {
+        /// <summary>
+        /// Cookie key used to store and retrieve the survey ID in client
+        /// </summary>
+        public const string StorageKey = "LightingSurveyID";
+
         public SurveyResponse()
         {
             Dates = new SurveyDates();

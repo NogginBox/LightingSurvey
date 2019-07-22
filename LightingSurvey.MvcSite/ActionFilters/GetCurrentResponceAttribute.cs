@@ -1,8 +1,11 @@
-﻿using LightingSurvey.Data.Repositories;
+﻿using LightingSurvey.Data.Models;
+using LightingSurvey.Data.Repositories;
 using LightingSurvey.MvcSite.Controllers;
+using LightingSurvey.MvcSite.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Routing;
+using System;
 using System.Threading.Tasks;
 
 namespace LightingSurvey.MvcSite.ActionFilters
@@ -12,11 +15,12 @@ namespace LightingSurvey.MvcSite.ActionFilters
     /// </summary>
     public class GetCurrentResponceAttribute : ActionFilterAttribute
     {
+        private readonly IClientSideStorageService _clientStorage;
         private readonly ISurveyResponseRepository _surveyResponseRepository;
-        private const string tempResponseId = "temp-id";
 
-        public GetCurrentResponceAttribute(ISurveyResponseRepository surveyResponseRepository)
+        public GetCurrentResponceAttribute(IClientSideStorageService clientStorage, ISurveyResponseRepository surveyResponseRepository)
         {
+            _clientStorage = clientStorage;
             _surveyResponseRepository = surveyResponseRepository;
             Order = 1;
         }
@@ -25,12 +29,15 @@ namespace LightingSurvey.MvcSite.ActionFilters
         {
             if (context.Controller is SurveyController surveyController)
             {
-                surveyController.CurrentResponse = await _surveyResponseRepository.Find(tempResponseId);
+                var responseId = _clientStorage.Read(SurveyResponse.StorageKey);
+                surveyController.CurrentResponse = await _surveyResponseRepository.Find(responseId);
                 if (surveyController.CurrentResponse == null)
                 {
+                    _clientStorage.Clear(SurveyResponse.StorageKey);
                     context.Result = new RedirectToRouteResult(
-                        new RouteValueDictionary(new { controller = "Home", action = "Error" })
+                        new RouteValueDictionary(new { controller = "Home", action = "Index" })
                     );
+                    return;
                 }
             }
 

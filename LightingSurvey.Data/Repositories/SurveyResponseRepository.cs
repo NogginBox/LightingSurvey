@@ -26,6 +26,10 @@ namespace LightingSurvey.Data.Repositories
 
         public async Task<SurveyResponse> Find(string externalId)
         {
+            if(string.IsNullOrEmpty(externalId))
+            {
+                return null;
+            }
             var response = await _data.Responces.FirstOrDefaultAsync(r => r.IdExternal == externalId);
             return response;
         }
