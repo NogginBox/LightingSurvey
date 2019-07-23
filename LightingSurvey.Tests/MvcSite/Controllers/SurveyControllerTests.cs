@@ -26,7 +26,7 @@ namespace LightingSurvey.Tests.MvcSite.Controllers
             var dateTime = Substitute.For<IDateTimeService>();
             var repo = Substitute.For<ISurveyResponseRepository>();
             repo.Create().Returns(SurveyResponse.CreateNew(FakeNow));
-            var controller = new SurveyController(clientStorage, dateTime, repo);
+            var controller = new SurveyController(clientStorage, dateTime, null, null, repo);
 
             // Act
             var result = await controller.Start();
@@ -46,7 +46,7 @@ namespace LightingSurvey.Tests.MvcSite.Controllers
             repo.Create().Returns(SurveyResponse.CreateNew(FakeNow));
             repo.Find(Arg.Any<string>()).Returns(SurveyResponse.CreateNew(FakeNow.AddDays(-1)));
 
-            var controller = new SurveyController(clientStorage, dateTime, repo);
+            var controller = new SurveyController(clientStorage, dateTime, null, null, repo);
 
             // Act
             var result = await controller.Start();
@@ -66,7 +66,7 @@ namespace LightingSurvey.Tests.MvcSite.Controllers
             var dateTime = Substitute.For<IDateTimeService>();
             var repo = Substitute.For<ISurveyResponseRepository>();
 
-            var controller = new SurveyController(clientStorage, dateTime, repo)
+            var controller = new SurveyController(clientStorage, dateTime, null, null, repo)
             {
                 CurrentResponse = response
             };
@@ -92,7 +92,7 @@ namespace LightingSurvey.Tests.MvcSite.Controllers
             var dateTime = Substitute.For<IDateTimeService>();
             var repo = Substitute.For<ISurveyResponseRepository>();
 
-            var controller = new SurveyController(clientStorage, dateTime, repo)
+            var controller = new SurveyController(clientStorage, dateTime, null, null, repo)
             {
                 CurrentResponse = response
             };
