@@ -35,6 +35,7 @@ namespace LightingSurvey.MvcSite.Extensions
                 .Replace("\r\n", "====");
 
             var htmlSafeAddress = WebUtility.HtmlEncode(addressString)
+                .Replace("========", "<br />")
                 .Replace("====", "<br />");
 
             return new HtmlString(htmlSafeAddress);
