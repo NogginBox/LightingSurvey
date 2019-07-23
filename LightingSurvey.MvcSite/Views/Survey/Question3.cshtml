@@ -11,12 +11,11 @@
         <div class="govuk-grid-column-two-thirds">
             <form method="post" novalidate>
                 <h1 class="govuk-heading-xl">What is your home address?</h1>
-                <div class="govuk-form-group">
-
+                <div class="govuk-form-group" asp-validation-wrapper-for="Question.Answer">
                     <label class="govuk-label govuk-label--xl" asp-for="Question.Answer">
                         Postcode
                     </label>
-
+                    <span id="address-error" class="govuk-error-message" asp-validation-for="Question.Answer"></span>
                     <input class="govuk-input govuk-input--width-10" asp-for="Question.Answer" type="text">
                 </div>
 

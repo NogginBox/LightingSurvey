@@ -1841,7 +1841,7 @@
 .govuk-input[type="number"] {
   -moz-appearance: textfield; }
 
-.govuk-input--error {
+.govuk-input--error, .input-validation-error {
   border: 4px solid #b10e1e; }
 
 .govuk-input--width-30 {
@@ -4254,50 +4254,3 @@
   @media (min-width: 40.0625em) {
     .govuk-\!-width-one-quarter {
       width: 25% !important; } }
-
-a.navbar-brand {
-  white-space: normal;
-  text-align: center;
-  word-break: break-all; }
-
-/* Sticky footer styles
--------------------------------------------------- */
-html {
-  font-size: 14px; }
-
-@media (min-width: 768px) {
-  html {
-    font-size: 16px; } }
-
-.border-top {
-  border-top: 1px solid #e5e5e5; }
-
-.border-bottom {
-  border-bottom: 1px solid #e5e5e5; }
-
-.box-shadow {
-  box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.05); }
-
-button.accept-policy {
-  font-size: 1rem;
-  line-height: inherit; }
-
-/* Sticky footer styles
--------------------------------------------------- */
-html {
-  position: relative;
-  min-height: 100%; }
-
-body {
-  /* Margin bottom by footer height */
-  margin-bottom: 60px; }
-
-.footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  white-space: nowrap;
-  /* Set the fixed height of the footer here */
-  height: 60px;
-  line-height: 60px;
-  /* Vertically center the text there */ }
