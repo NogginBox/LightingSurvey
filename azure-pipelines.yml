@@ -17,15 +17,19 @@ steps:
   displayName: 'dotnet build $(buildConfiguration)'
 
 - task: DotNetCoreCLI@2
+  displayName: Run Tests
   inputs:
     command: 'test'
+    projects: '**/*.Tests/*.csproj'
 
 - task: DotNetCoreCLI@2
+  displayName: Publish
   inputs:
     command: 'publish'
     publishWebProjects: true
 
 - task: AzureRmWebAppDeployment@4
+  displayName: Deploy
   inputs:
     ConnectionType: 'AzureRM'
     azureSubscription: 'Free Trial(843e8c0f-cadd-4cb6-89d6-79bbe10229b1)'
