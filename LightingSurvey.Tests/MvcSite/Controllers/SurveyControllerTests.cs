@@ -15,7 +15,7 @@ namespace LightingSurvey.Tests.MvcSite.Controllers
     public class SurveyControllerTests
     {
         [Fact]
-        public async Task TestStartCreatesNewResponseWhenNoCurrentResponse()
+        public async Task TestStartCreatesNewResponseWhenNoCurrentResponseThenRedirects()
         {
             // Arrange
             var now = new DateTime(2019, 7, 1);
@@ -29,8 +29,29 @@ namespace LightingSurvey.Tests.MvcSite.Controllers
             var result = await controller.Start();
 
             // Assert
-            Assert.IsType<RedirectToActionResult>(result);
             await repo.Received().Create();
+            Assert.IsType<RedirectToActionResult>(result);
+        }
+
+        [Fact]
+        public async Task TestStartDoesNotCreatesNewResponseWhenCurrentResponseFoundThenRedirects()
+        {
+            // Arrange
+            var now = new DateTime(2019, 7, 1);
+            var clientStorage = Substitute.For<IClientSideStorageService>();
+            var dateTime = Substitute.For<IDateTimeService>();
+            var repo = Substitute.For<ISurveyResponseRepository>();
+            repo.Create().Returns(SurveyResponse.CreateNew(now));
+            repo.Find(Arg.Any<string>()).Returns(SurveyResponse.CreateNew(now.AddDays(-1)));
+
+            var controller = new SurveyController(clientStorage, dateTime, repo);
+
+            // Act
+            var result = await controller.Start();
+
+            // Assert
+            await repo.DidNotReceive().Create();
+            Assert.IsType<RedirectToActionResult>(result);
         }
     }
 }
