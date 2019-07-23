@@ -2,9 +2,12 @@
 using LightingSurvey.Data.Models;
 using LightingSurvey.Data.Repositories;
 using LightingSurvey.MvcSite.ActionFilters;
+using LightingSurvey.MvcSite.Extensions;
 using LightingSurvey.MvcSite.Services;
+using LightingSurvey.MvcSite.Services.Postcodes;
 using LightingSurvey.MvcSite.ViewModels.Survey;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
 
@@ -19,12 +22,16 @@ namespace LightingSurvey.MvcSite.Controllers
 
         private readonly IClientSideStorageService _clientStorage;
         private readonly IDateTimeService _dateTime;
+        private readonly ILogger<SurveyController> _logger;
+        private readonly IPostcodeLookupService _postcodeLookup;
         private readonly ISurveyResponseRepository _surveyResponseRepository;
 
-        public SurveyController(IClientSideStorageService clientStorage, IDateTimeService dateTime, ISurveyResponseRepository surveyResponseRepository)
+        public SurveyController(IClientSideStorageService clientStorage, IDateTimeService dateTime, ILogger<SurveyController> logger, IPostcodeLookupService postcodeLookup, ISurveyResponseRepository surveyResponseRepository)
         {
             _clientStorage = clientStorage;
             _dateTime = dateTime;
+            _logger = logger;
+            _postcodeLookup = postcodeLookup;
             _surveyResponseRepository = surveyResponseRepository;
         }
 
@@ -83,15 +90,30 @@ namespace LightingSurvey.MvcSite.Controllers
         [ServiceFilter(typeof(GetCurrentResponceAttribute))]
         public IActionResult Question3()
         {
-            return QuestionView<NameQuestionViewModel, string>(CurrentResponse.Respondent.Address.PostCode);
+            return QuestionView<AddressQuestionViewModel, AddressViewModel>(CurrentResponse.Respondent.Address.ToViewModel());
         }
 
         [HttpPost]
-        [CheckValidAnswer(typeof(string))]
+        [CheckValidAnswer(typeof(AddressViewModel))]
         [ServiceFilter(typeof(GetCurrentResponceAttribute))]
-        public async Task<IActionResult> Question3(NameQuestionViewModel question)
+        public async Task<IActionResult> Question3(AddressQuestionViewModel question)
         {
-            CurrentResponse.Respondent.Address.PostCode = question.Answer;
+            CurrentResponse.Respondent.Address = question.Answer.ToDataModel();
+            var address = CurrentResponse.Respondent.Address;
+            if(!string.IsNullOrEmpty(address.PostCode))
+            {
+                try
+                {
+                    var latLong = await _postcodeLookup.Search(address.PostCode);
+                    address.Latitude = (decimal)latLong.Lat;
+                    address.Longitude = (decimal)latLong.Long;
+                }
+                catch(Exception ex)
+                {
+                    _logger.LogWarning(ex, "Could not get location details from {postcode}", address.PostCode);
+                }
+            }
+
             CurrentResponse.Modified(_dateTime.Now);
             await _surveyResponseRepository.SaveChanges();
 
@@ -147,7 +169,8 @@ namespace LightingSurvey.MvcSite.Controllers
         {
             CurrentResponse.Complete(_dateTime.Now);
             await _surveyResponseRepository.SaveChanges();
-            // todo: remove current survey cookie
+            _clientStorage.Clear(SurveyResponse.StorageKey);
+
             return RedirectToAction("Done", "Home");
         }
 

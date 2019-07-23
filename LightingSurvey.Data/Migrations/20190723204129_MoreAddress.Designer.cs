@@ -4,14 +4,16 @@ using LightingSurvey.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LightingSurvey.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20190723204129_MoreAddress")]
+    partial class MoreAddress
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -33,7 +35,7 @@ namespace LightingSurvey.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Responses");
+                    b.ToTable("Responces");
                 });
 
             modelBuilder.Entity("LightingSurvey.Data.Models.SurveyResponse", b =>
@@ -52,7 +54,7 @@ namespace LightingSurvey.Data.Migrations
 
                             b1.HasKey("SurveyResponseId");
 
-                            b1.ToTable("Responses");
+                            b1.ToTable("Responces");
 
                             b1.HasOne("LightingSurvey.Data.Models.SurveyResponse")
                                 .WithOne("Dates")
@@ -74,7 +76,7 @@ namespace LightingSurvey.Data.Migrations
 
                             b1.HasKey("SurveyResponseId");
 
-                            b1.ToTable("Responses");
+                            b1.ToTable("Responces");
 
                             b1.HasOne("LightingSurvey.Data.Models.SurveyResponse")
                                 .WithOne("Respondent")
@@ -105,7 +107,7 @@ namespace LightingSurvey.Data.Migrations
 
                                     b2.HasKey("SurveyRespondentSurveyResponseId");
 
-                                    b2.ToTable("Responses");
+                                    b2.ToTable("Responces");
 
                                     b2.HasOne("LightingSurvey.Data.Models.SurveyRespondent")
                                         .WithOne("Address")

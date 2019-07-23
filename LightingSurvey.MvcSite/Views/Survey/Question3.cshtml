@@ -1,5 +1,5 @@
 ﻿@using LightingSurvey.MvcSite.ViewModels.Survey
-@model QuestionPageViewModel<string>
+@model QuestionPageViewModel<AddressViewModel>
 @{
     ViewData["Title"] = "Question 3";
 }
@@ -11,16 +11,41 @@
         <div class="govuk-grid-column-two-thirds">
             <form method="post" novalidate>
                 <h1 class="govuk-heading-xl">What is your home address?</h1>
-                <div class="govuk-form-group" asp-validation-wrapper-for="Question.Answer">
-                    <label class="govuk-label govuk-label--xl" asp-for="Question.Answer">
+
+                <div class="govuk-form-group" asp-validation-wrapper-for="Question.Answer.Line1">
+                    <label class="govuk-label" asp-for="Question.Answer.Line1">
+                        Building and street <span class="govuk-visually-hidden">line 1 of 2</span>
+                    </label>
+                    <span id="line1-error" class="govuk-error-message" asp-validation-for="Question.Answer.Line1"></span>
+                    <input class="govuk-input" asp-for="Question.Answer.Line1" type="text">
+                </div>
+
+                <div class="govuk-form-group" asp-validation-wrapper-for="Question.Answer.Line2">
+                    <label class="govuk-label" asp-for="Question.Answer.Line2">
+                        <span class="govuk-visually-hidden">Building and street line 2 of 2</span>
+                    </label>
+                    <span id="line2-error" class="govuk-error-message" asp-validation-for="Question.Answer.Line2"></span>
+                    <input class="govuk-input" asp-for="Question.Answer.Line2" type="text">
+                </div>
+
+                <div class="govuk-form-group" asp-validation-wrapper-for="Question.Answer.Town">
+                    <label class="govuk-label" asp-for="Question.Answer.Town">
+                        Town or city
+                    </label>
+                    <span id="town-error" class="govuk-error-message" asp-validation-for="Question.Answer.Town"></span>
+                    <input class="govuk-input govuk-!-width-two-thirds" asp-for="Question.Answer.Town" type="text">
+                </div>
+
+                <div class="govuk-form-group" asp-validation-wrapper-for="Question.Answer.Postcode">
+                    <label class="govuk-label" asp-for="Question.Answer.Postcode">
                         Postcode
                     </label>
-                    <span id="address-error" class="govuk-error-message" asp-validation-for="Question.Answer"></span>
-                    <input class="govuk-input govuk-input--width-10" asp-for="Question.Answer" type="text">
+                    <span id="postcode-error" class="govuk-error-message" asp-validation-for="Question.Answer.Postcode"></span>
+                    <input class="govuk-input govuk-input--width-10" asp-for="Question.Answer.Postcode" type="text">
                 </div>
 
                 <button type="submit" class="govuk-button">
-                    Find address
+                    Continue
                 </button>
             </form>
         </div>
