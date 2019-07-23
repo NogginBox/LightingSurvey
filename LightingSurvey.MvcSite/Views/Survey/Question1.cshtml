@@ -10,13 +10,13 @@
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
             <form method="post" novalidate>
-                <div class="govuk-form-group">
+                <div class="govuk-form-group" asp-validation-wrapper-for="Question.Answer">
                     <h1 class="govuk-label-wrapper">
                         <label class="govuk-label govuk-label--xl" asp-for="Question.Answer">
                             What is your full name?
                         </label>
-
                     </h1>
+                    <span id="name-error" class="govuk-error-message" asp-validation-for="Question.Answer"></span>
                     <input class="govuk-input" asp-for="Question.Answer" type="text" autocomplete="name" spellcheck="false">
                 </div>
 

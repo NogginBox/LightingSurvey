@@ -11,13 +11,14 @@
         <div class="govuk-grid-column-two-thirds">
             <form method="post" novalidate>
 
-                <div class="govuk-form-group">
+                <div class="govuk-form-group" asp-validation-wrapper-for="Question.Answer">
                     <fieldset class="govuk-fieldset">
                         <legend class="govuk-fieldset__legend govuk-fieldset__legend--xl">
                             <h1 class="govuk-fieldset__heading">
                                 Are you happy with the level of lighting?
                             </h1>
                         </legend>
+                        <span id="happy-error" class="govuk-error-message" asp-validation-for="Question.Answer"></span>
                         <div class="govuk-radios govuk-radios--inline">
                             <div class="govuk-radios__item">
                                 <input asp-for="Question.Answer" class="govuk-radios__input" type="radio" value="true" id="answerY">
