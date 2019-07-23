@@ -3,6 +3,7 @@ using LightingSurvey.Data;
 using LightingSurvey.Data.Repositories;
 using LightingSurvey.MvcSite.ActionFilters;
 using LightingSurvey.MvcSite.Services;
+using LightingSurvey.MvcSite.Services.Postcodes;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -30,6 +31,7 @@ namespace LightingSurvey.MvcSite
             services.AddScoped<GetCurrentResponceAttribute>();
             services.AddTransient<IDateTimeService, DateTimeService>();
             services.AddTransient<IClientSideStorageService, CookieStorageService>();
+            services.AddTransient<IPostcodeLookupService, PostcodeLookupService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
