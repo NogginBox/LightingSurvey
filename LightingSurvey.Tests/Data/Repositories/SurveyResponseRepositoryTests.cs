@@ -24,7 +24,7 @@ namespace LightingSurvey.Tests.Data.Repositories
             // Insert seed data into the database using one instance of the context
             using (var context = new DataContext(options))
             {
-                context.Responces.Add(new SurveyResponse { PerceivedBrightnessLevel = 6 });
+                context.Responses.Add(new SurveyResponse { PerceivedBrightnessLevel = 6 });
                 context.SaveChanges();
             }
 
@@ -39,7 +39,7 @@ namespace LightingSurvey.Tests.Data.Repositories
                 await repository.SaveChanges();
 
                 // Assert
-                Assert.Equal(2, await context.Responces.CountAsync());
+                Assert.Equal(2, await context.Responses.CountAsync());
                 Assert.NotNull(newSurveyResponse.IdExternal);
                 Assert.Equal(testCreateDate, newSurveyResponse.Dates.Created);
             }
@@ -54,8 +54,8 @@ namespace LightingSurvey.Tests.Data.Repositories
             // Insert seed data into the database using one instance of the context
             using (var context = new DataContext(options))
             {
-                context.Responces.Add(new SurveyResponse { IdExternal = "id1", PerceivedBrightnessLevel = 6 });
-                context.Responces.Add(new SurveyResponse { IdExternal = "id2", PerceivedBrightnessLevel = 7 });
+                context.Responses.Add(new SurveyResponse { IdExternal = "id1", PerceivedBrightnessLevel = 6 });
+                context.Responses.Add(new SurveyResponse { IdExternal = "id2", PerceivedBrightnessLevel = 7 });
                 context.SaveChanges();
             }
 

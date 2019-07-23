@@ -15,7 +15,7 @@ namespace LightingSurvey.Data
         private const string dbPassword = "2019-07-21_W*bsite$......";
         private readonly string _connectionString = $"Server=tcp:lightingsurveydb.database.windows.net,1433;Initial Catalog=LightingSurvey2019;Persist Security Info=False;User ID={dbUsername};Password={dbPassword};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
 
-        public DbSet<SurveyResponse> Responces { get; set; }
+        public DbSet<SurveyResponse> Responses { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

@@ -7,7 +7,7 @@ namespace LightingSurvey.Data
 {
     public interface IDataContext
     {
-        DbSet<SurveyResponse> Responces { get; set; }
+        DbSet<SurveyResponse> Responses { get; set; }
 
         int SaveChanges();
 

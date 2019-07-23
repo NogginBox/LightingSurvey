@@ -20,7 +20,7 @@ namespace LightingSurvey.Data.Repositories
         public async Task<SurveyResponse> Create()
         {
             var surveyResponse = SurveyResponse.CreateNew(_dateTime.Now);
-            await _data.Responces.AddAsync(surveyResponse);
+            await _data.Responses.AddAsync(surveyResponse);
             return surveyResponse;
         }
 
@@ -30,7 +30,7 @@ namespace LightingSurvey.Data.Repositories
             {
                 return null;
             }
-            var response = await _data.Responces.FirstOrDefaultAsync(r => r.IdExternal == externalId);
+            var response = await _data.Responses.FirstOrDefaultAsync(r => r.IdExternal == externalId);
             return response;
         }
 
