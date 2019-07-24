@@ -48,7 +48,7 @@ namespace LightingSurvey.MvcSite.TagHelpers
 
         /// <inheritdoc />
         /// <remarks>Does nothing if <see cref="For"/> is <c>null</c>.</remarks>
-        public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
+        public override void Process(TagHelperContext context, TagHelperOutput output)
         {
             if (context == null)
             {
@@ -62,7 +62,6 @@ namespace LightingSurvey.MvcSite.TagHelpers
 
             if (For != null)
             {
-
                 // use GenerateValidationMessage to work out if there are any errors
                 // todo: is there a better way to do this
                 var tagBuilder = Generator.GenerateValidationMessage(

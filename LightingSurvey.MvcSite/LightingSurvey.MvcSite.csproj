@@ -5,6 +5,9 @@
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
     <ApplicationInsightsResourceId>/subscriptions/843e8c0f-cadd-4cb6-89d6-79bbe10229b1/resourcegroups/CQS/providers/microsoft.insights/components/lightingsurvey2019</ApplicationInsightsResourceId>
     <ApplicationInsightsAnnotationResourceId>/subscriptions/843e8c0f-cadd-4cb6-89d6-79bbe10229b1/resourcegroups/CQS/providers/microsoft.insights/components/lightingsurvey2019</ApplicationInsightsAnnotationResourceId>
+    <Authors>Richard Garside</Authors>
+    <Company>Nogginbox</Company>
+    <Product>Lighting Survey</Product>
   </PropertyGroup>
 
   <ItemGroup>

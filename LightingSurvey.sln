@@ -9,7 +9,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LightingSurvey.Data", "Ligh
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LightingSurvey.Tests", "LightingSurvey.Tests\LightingSurvey.Tests.csproj", "{398B11C8-5340-47F8-8092-40A38683E6EB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightingSurvey.Common", "LightingSurvey.Common\LightingSurvey.Common.csproj", "{DC57B361-5E6A-4F1C-99DF-5178340E5EB2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LightingSurvey.Common", "LightingSurvey.Common\LightingSurvey.Common.csproj", "{DC57B361-5E6A-4F1C-99DF-5178340E5EB2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{83BD3A28-8F49-4AE9-90EC-8B7FCF2EE8BB}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
