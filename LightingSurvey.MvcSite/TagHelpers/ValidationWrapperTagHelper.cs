@@ -1,7 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Html;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.AspNetCore.Mvc.ViewFeatures.Internal;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 
@@ -60,24 +64,25 @@ namespace LightingSurvey.MvcSite.TagHelpers
                 throw new ArgumentNullException(nameof(output));
             }
 
-            if (For != null)
+            if (For != null && FieldHasError(ViewContext, For.Name))
             {
-                // use GenerateValidationMessage to work out if there are any errors
-                // todo: is there a better way to do this
-                var tagBuilder = Generator.GenerateValidationMessage(
-                    ViewContext,
-                    For.ModelExplorer,
-                    For.Name,
-                    message: string.Empty,
-                    tag: null,
-                    htmlAttributes: null);
-
-
-                if (tagBuilder.HasInnerHtml)
-                {
-                    output.Attributes.AddClass("govuk-form-group--error");
-                }
+                output.Attributes.AddClass("govuk-form-group--error");
             }
+        }
+
+
+        private bool FieldHasError(ViewContext viewContext, string expression)
+        {
+            if (viewContext == null)
+            {
+                throw new ArgumentNullException(nameof(viewContext));
+            }
+
+            var fullName = NameAndIdProvider.GetFullHtmlFieldName(viewContext, expression);
+            var tryGetModelStateResult = viewContext.ViewData.ModelState.TryGetValue(fullName, out var entry);
+            var modelErrors = tryGetModelStateResult ? entry.Errors : null;
+
+            return (modelErrors != null && modelErrors.Count != 0);
         }
     }
 }
